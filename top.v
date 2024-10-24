@@ -11,7 +11,7 @@ module top
     output [6:0] seg // 7seg segments
 );
     wire reset = btnC;
-    wire clock = div_clock;
+    wire div_clock = clk;
 
     clock_div #(.DIVIDE_BY(DIVIDE_BY)) clk_div(
         .clock(clk),
@@ -20,7 +20,7 @@ module top
     );
 
     seven_seg_scanner seven_scnner(
-        
+        .div_clock(div_clock)
     )
     // Instantiate the clock divider...
     // ... wire it up to the scanner
