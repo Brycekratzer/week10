@@ -5,24 +5,27 @@ module clock_div
 (
     input clock,
     input reset,
-    output reg div_clock
+    output reg div_clock // Slowed down clock
 );
 
-    // 100 MHz input clock Divide by either 2^17 or use a counter based divider
-    // to output to div_clock
+// Register array for flip-flop chain
+// each bit represents one stage of division
+reg [DIVIDE_BY-1:0] div_chain;
 
-    // Use the reset signal to set the initial state of your div_clock as well
-    // as reset whatever div method you are using
-
-    // If you use the 2^N divider, try instantiating the flip flops with a
-    // genvar and generate block
-
-    // If you use the counter block, try using parameters in the counter module
-    // to specify the number of bits
-    
-    // IMPORTANT NOTE!! If you do a counter based divider, make sure to only
-    // divide clock by 2 during test bench runs or your tests will fail. This
-    // will automatically happen for you if you use 2^N divider and the
-    // BIT_COUNT parameter
+// synchronous logic block, sensitive to rising edge of clock or reset
+always@(posedge clock or posedge reset) begin
+    if(reset) begin
+        // reset all flip-flops and output to known state
+        div_chain <= 0;
+        div_clock <= 0;
+    end else begin
+        // first flip-flop toggles every clock cycle
+        div_chain[0] <= ~div_chain[0];
+        //each subsequent flip-flop follows previous one
+        div_clock[DIVIDE_BY-1:1] <= div_clock[DIVIDE_BY-2:0];
+        // Output takes state of final flip-flop in chain
+        div_clock <= div_chain[DIVIDE_BY-1];
+    end
+end
 
 endmodule
