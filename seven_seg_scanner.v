@@ -1,19 +1,31 @@
+
 module seven_seg_scanner(
     input div_clock,
     input reset,
     output reg [3:0] anode
 );
 
-    // This block should count through from zero to three, and only activate one
-    // anode at a time in the seven segment displays. Keep in mind THEY ARE
-    // INVERSE DRIVE, that is that 0 is on 1 is off
+    reg [1:0] count; 
 
-    // The reset line should set things back to segment 0
+    always @(posedge div_clock or posedge reset) begin
+        if (reset) begin
+            count <= 2'b00;   
+        end
+        else begin
+            count <= count + 1'b1;  
+            if (count == 2'b11) begin
+                count <= 2'b00;     
+            end
+        end
+    end
 
-    // Anodes are:
-    // 0: R
-    // 1: RC
-    // 2: LC
-    // 3: L
+    always @(*) begin
+        case (count)
+            2'b00: anode = 4'b1110;  // Segment 0 (Right)
+            2'b01: anode = 4'b1101;  // Segment 1 (Right Center)
+            2'b10: anode = 4'b1011;  // Segment 2 (Left Center)
+            2'b11: anode = 4'b0111;  // Segment 3 (Left)3 
+        endcase
+    end
 
 endmodule
