@@ -12,6 +12,9 @@ module math_block(
     always@(*) begin
          AplusB = A + B;
          AminusB = A - B;
+    always @(*) begin
+        AplusB = A + B;
+        AminusB = A - B;
     end
 
 
