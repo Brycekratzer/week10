@@ -10,7 +10,18 @@ module top
     output [3:0] an, // 7seg anodes
     output [6:0] seg // 7seg segments
 );
+    wire reset = btnC;
+    wire clock = div_clock;
 
+    clock_div #(.DIVIDE_BY(DIVIDE_BY)) clk_div(
+        .clock(clk),
+        .reset(reset),
+        .output(div_clock)
+    );
+
+    seven_seg_scanner seven_scnner(
+        
+    )
     // Instantiate the clock divider...
     // ... wire it up to the scanner
     // ... wire the scanner to the decoder

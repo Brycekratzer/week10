@@ -22,7 +22,7 @@ always@(posedge clock or posedge reset) begin
         // first flip-flop toggles every clock cycle
         div_chain[0] <= ~div_chain[0];
         //each subsequent flip-flop follows previous one
-        div_clock[DIVIDE_BY-1:1] <= div_clock[DIVIDE_BY-2:0];
+        div_chain[DIVIDE_BY-1:1] <= div_chain[DIVIDE_BY-2:0];
         // Output takes state of final flip-flop in chain
         div_clock <= div_chain[DIVIDE_BY-1];
     end
