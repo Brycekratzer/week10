@@ -9,9 +9,7 @@ module math_block(
     // four bit adders and two's compliment converters that you implemented in
     // previous labs, or set up some behavioral verilog to do the job for you
 
-    always@(*) begin
-         AplusB = A + B;
-         AminusB = A - B;
+    
     always @(*) begin
         AplusB = A + B;
         AminusB = A - B;
